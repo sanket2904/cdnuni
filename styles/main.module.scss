@@ -1,0 +1,28 @@
+
+
+.mainFile::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.mainFile {
+    color: transparent;
+}
+.mainFile::before {
+    content: 'Select some files';
+}
+.mainFilebutton::-webkit-file-upload-button {
+    visibility: hidden;
+}
+.mainFilebutton {
+    color: transparent;
+}
+
+.mainFilebutton::before {
+    content: 'Add more files';
+    height: 1.5rem;
+    width: 60%;
+    background-color: #fff;
+    color: #000;
+    padding: 25px;
+    border-radius: 5px;
+}
