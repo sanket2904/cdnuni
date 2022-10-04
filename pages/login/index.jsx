@@ -9,7 +9,7 @@ export default function Login() {
     React.useEffect(() => {
         window.ssn = JSON.parse(window.localStorage.getItem("session"))
     
-        let host = "http://localhost:3000"
+        let host = "https://api.uploadly.dev"
         if (window.ssn) {
             axios.get(host+"/api/account/"+window.ssn.accountId, {headers: {
                 "Authorization": "bearer "+window.ssn.token
@@ -31,7 +31,7 @@ export default function Login() {
         console.log("login")
         let email = document.querySelector("input[name='email']").value
         let password = document.querySelector("input[name='password']").value
-        let host = "http://localhost:3000"
+        let host = "https://api.uploadly.dev"
         
         axios.post(host+"/api/login", {email,password}).then((res) => {
             console.log(res.data)

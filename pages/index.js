@@ -9,7 +9,7 @@ export default function Home() {
   const router = new useRouter()
   const [showUpload,setUpload] = useState(false);
   const [file,setFile] = useState([]);
-  let host = "http://localhost:3000"
+  let host = "https://api.uploadly.dev"
   let [account,setAccount] = useState({})
   let [loader,setLoader] = useState(false)
   React.useEffect(() => {
