@@ -10,7 +10,7 @@ export default function Home() {
   const [showUpload,setUpload] = useState(false);
   const [file,setFile] = useState([]);
   const [event,setEvent] = useState("");
-  const [options,setOptions] = useState(true)
+  const [options,setOptions] = useState(false)
   let host = "https://api.uploadly.dev"
   let [account,setAccount] = useState({
     files:[]
@@ -109,15 +109,15 @@ export default function Home() {
 
     <>
       <div className={` ${showUpload ? "blur-lg" :""}  flex bg-primary flex-wrap overflow-hidden `}>
-      <div className="top w-full h-14 max-w-6xl flex items-center justify-end mx-auto pt-2">
+      <div className="top w-full h-14  flex items-center justify-end mx-auto pt-2">
         
         <div onClick={() => setOptions(!options)} className="avatar w-10 h-10 rounded-lg bg-white justify-self-end mr-4">
         </div>
         {
           options ? (
             
-              <div className="h-48 top-14 absolute w-40 right-4 bg-secondary z-20 shadow-xl ">
-                  <div className="p-3 flex">
+              <div style={{ border: "1px solid #616161" }}  className="h-48 top-14 absolute rounded  w-40 right-4 bg-secondary z-20 shadow-xl ">
+                  <div className="p-5 flex border-b-2">
                     <div className="signout" onClick={() => {
                       window.localStorage.removeItem("session")
                       location.reload()
