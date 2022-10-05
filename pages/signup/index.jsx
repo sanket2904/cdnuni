@@ -9,7 +9,7 @@ export default function Signup() {
     const [match,setMatch] = React.useState("initial")
     const [empty,setEmpty] = React.useState("initial")
     const [email,setEmail] = React.useState("initial")
-
+    const [err,setError] = React.useState("")
     const [password,setPassword] = React.useState("initial")
     React.useEffect(() => {
         window.ssn = JSON.parse(window.localStorage.getItem("session"))
@@ -68,7 +68,10 @@ export default function Signup() {
             console.log(res.data)
             window.localStorage.setItem("session",JSON.stringify(res.data.session))
             window.location.href = "/"
-        }).catch(err => console.log(err))
+        }).catch(err => {
+            setError(err.response.data.message)
+            setLoader(false)
+        })
         setMatch("matched")
         setLoader(true)
 
@@ -120,6 +123,7 @@ export default function Signup() {
                             {
                                 !(empty != "empty") && <p style={{ color: "red" }}>Please fill all the fields</p>
                             }
+                            <p className="text-red-500 font-semibold pt-2 pb-2">{err}</p>
                         </div>
                         <p className="mt-2">
                             <a style={{ color: "#a1a1a1", fontSize: "14px" }} className=" text-gray-500 cursor-pointer ">Forgot password?</a>
@@ -136,7 +140,7 @@ export default function Signup() {
     }
     else {
         return (
-            <div className="flex pl-6 pr-6  w-full h-screen pt-5 sm:h-screen sm:items-center items-center justify-center">
+            <div className="flex pl-6 pr-6  w-full h-screen pt-5 sm:h-screen sm:items-center items-center justify-center  ">
                 <Loader />
             </div>
         )
@@ -149,9 +153,18 @@ export default function Signup() {
 
 function  Loader(params) {
     return (
-        <svg style={{width:"40%",height:"40%"}} className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" strokeWidth="2" fill="none" viewBox="0 0 24 24">
-            {/* <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle> */}
-            <path className="opacity-75" fill="currentColor" strokeWidth="2" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        <svg className="sm:max-w-sm" version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg"  
+            viewBox="0 0 100 100" enableBackground="new 0 0 0 0">
+            <path fill="#fff" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                <animateTransform
+                    attributeName="transform"
+                    attributeType="XML"
+                    type="rotate"
+                    dur="1s"
+                    from="0 50 50"
+                    to="360 50 50"
+                    repeatCount="indefinite" />
+            </path>
         </svg>
     )
 }

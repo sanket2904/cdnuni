@@ -9,8 +9,12 @@ export default function Home() {
   const router = new useRouter()
   const [showUpload,setUpload] = useState(false);
   const [file,setFile] = useState([]);
+  const [event,setEvent] = useState("");
+  const [options,setOptions] = useState(true)
   let host = "https://api.uploadly.dev"
-  let [account,setAccount] = useState({})
+  let [account,setAccount] = useState({
+    files:[]
+  })
   let [loader,setLoader] = useState(false)
   React.useEffect(() => {
     if (!window.ssn) {
@@ -105,8 +109,27 @@ export default function Home() {
 
     <>
       <div className={` ${showUpload ? "blur-lg" :""}  flex bg-primary flex-wrap overflow-hidden `}>
-      <div className="top w-full h-14">
+      <div className="top w-full h-14 max-w-6xl flex items-center justify-end mx-auto pt-2">
+        
+        <div onClick={() => setOptions(!options)} className="avatar w-10 h-10 rounded-lg bg-white justify-self-end mr-4">
+        </div>
+        {
+          options ? (
+            
+              <div className="h-48 top-14 absolute w-40 right-4 bg-secondary z-20 shadow-xl ">
+                  <div className="p-3 flex">
+                    <div className="signout" onClick={() => {
+                      window.localStorage.removeItem("session")
+                      location.reload()
+                    }}>
+                      <p>Sign out</p>
+                    </div>
+                  </div>
+              </div>
+          
+          ) : ""
 
+        }
       </div>
 
       <div style={{ borderBottom: "1px solid #333" }} className="w-full flex justify-center">
@@ -124,11 +147,11 @@ export default function Home() {
 
  
         <div className="w-full max-w-6xl h-8 flex justify-end  overflow-hidden">
-          <button onClick={() => setUpload(true)} className="bg-white pl-2 w-36 pr-2 text-md font-semibold rounded-md text-black flex items-center gap-1"> <ion-icon name="add-circle-outline"></ion-icon> <span style={{fontSize:"14px"}} className="text-sm">Upload a new file</span></button>
+          <button onClick={() => setUpload(true)} className="bg-white pl-2 w-24 pr-2 text-md font-semibold rounded-md text-black flex items-center gap-1"> <ion-icon name="add-circle-outline"></ion-icon> <span style={{fontSize:"14px"}} className="text-sm">Upload</span></button>
         </div>
           
         <div className=" overflow-x-auto w-full h-full flex justify-center">
-          <table className="h-full w-full rounded-md max-w-6xl mt-5 font-thin" >
+          {(account.files.length > 0) ?  <table className="h-full w-full rounded-md max-w-6xl mt-5 font-thin" >
             <thead >
               <tr style={{ backgroundColor: "#222222", borderRadius: "5px", borderCollapse: "separate !important" }} className="rounded-sm h-16 font-thin" >
                 <th style={{ minWidth: "150px", fontSize: "14px", color: "#888888" }} className=" p-2 text-left w-1/4">
@@ -174,6 +197,7 @@ export default function Home() {
                             }
                           }).then(res => {
                             if (res.status == 200) {
+
                               axios.get(host + "/api/files", {
                                 headers: {
                                   "Authorization": "Bearer " + window.ssn.token
@@ -181,9 +205,12 @@ export default function Home() {
 
                               }).then(res => {
                                 if (res.status == 200) {
-                                  
+                                  setEvent("File deleted")
                                   account.files = res.data.files
                                   setAccount({ ...account })
+                                  setTimeout(() => {
+                                    setEvent("")
+                                  }, 2000);
                                 }
                                 
 
@@ -200,7 +227,9 @@ export default function Home() {
               }
 
             </tbody>
-          </table>
+            </table> : <div>
+              <p className="text-white text-center mt-3 ">No files uploaded</p>
+            </div>}
           </div>
         
       </div>
@@ -246,6 +275,14 @@ export default function Home() {
         
     </div>
 
+    }
+
+    {
+      event && <div className="absolute bottom-25 w-32 h-8  left-1/2 -ml-16 bg-white">
+        <p className="text-black text-center pt-1 pb-1">
+          {event}
+        </p>
+      </div>
     }
   </>
   )
